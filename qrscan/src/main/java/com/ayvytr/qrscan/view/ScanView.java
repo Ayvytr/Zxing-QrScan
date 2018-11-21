@@ -81,18 +81,18 @@ public class ScanView extends View {
         //初始化自定义属性信息
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ScanView);
         maskColor = array.getColor(R.styleable.ScanView_maskColor,
-                ContextCompat.getColor(context, R.color.viewfinder_mask));
+                ContextCompat.getColor(context, R.color.scanview_mask));
         frameColor = array.getColor(R.styleable.ScanView_frameColor,
-                ContextCompat.getColor(context, R.color.viewfinder_frame));
+                ContextCompat.getColor(context, R.color.scanview_frame));
         cornerColor = array.getColor(R.styleable.ScanView_cornerColor,
-                ContextCompat.getColor(context, R.color.viewfinder_corner));
+                ContextCompat.getColor(context, R.color.scanview_corner));
         laserColor = array.getColor(R.styleable.ScanView_laserColor,
-                ContextCompat.getColor(context, R.color.viewfinder_laser));
+                ContextCompat.getColor(context, R.color.scanview_laser));
         frameWidth = array.getDimensionPixelSize(R.styleable.ScanView_frameWidth, dp2px(getContext(), 200));
 
         labelText = array.getString(R.styleable.ScanView_text);
         labelTextColor = array.getColor(R.styleable.ScanView_textColor,
-                ContextCompat.getColor(context, R.color.viewfinder_text_color));
+                ContextCompat.getColor(context, R.color.scanview_text_color));
         labelTextSize = array.getDimension(R.styleable.ScanView_textSize, TypedValue
                 .applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, getResources().getDisplayMetrics()));
         textPadding = array.getDimension(R.styleable.ScanView_textPadding, TypedValue
