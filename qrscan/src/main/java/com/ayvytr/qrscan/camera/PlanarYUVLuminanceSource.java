@@ -4,14 +4,15 @@ import android.graphics.Bitmap;
 import com.google.zxing.LuminanceSource;
 
 /**
- * This object extends LuminanceSource around an array of YUV data returned from the camera driver,
+ * This object extends LuminanceSource around an array of YUV data returned from the layout_camera driver,
  * with the option to crop to a rectangle within the full data. This can be used to exclude
  * superfluous pixels around the perimeter and speed up decoding.
  * <p>
  * It works for any pixel format where the Y channel is planar and appears first, including
  * YCbCr_420_SP and YCbCr_422_SP.
  *
- * @author dswitkin@google.com (Daniel Switkin)
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
  */
 public final class PlanarYUVLuminanceSource extends LuminanceSource {
     private final byte[] yuvData;

@@ -4,6 +4,12 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 
+/**
+ * An instance of Camera.AutoFocusCallback.
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
+ */
 public final class AutoFocusCallback implements Camera.AutoFocusCallback {
 
     private static final long AUTOFOCUS_INTERVAL_MS = 1500L;

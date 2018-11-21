@@ -11,6 +11,9 @@ import com.google.zxing.Result;
 
 /**
  * This class handles all the messaging which comprises the state machine for capture.
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
  */
 public final class CaptureActivityHandler extends Handler {
 
@@ -24,7 +27,7 @@ public final class CaptureActivityHandler extends Handler {
         DONE
     }
 
-    public CaptureActivityHandler(CameraView cameraView){
+    public CaptureActivityHandler(CameraView cameraView) {
         this.cameraView = cameraView;
         decodeThread = new DecodeHandler(cameraView);
         decodeThread.start();

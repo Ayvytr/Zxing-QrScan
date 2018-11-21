@@ -5,6 +5,12 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 
+/**
+ * An instance of Camera.PreviewCallback.
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
+ */
 public final class PreviewCallback implements Camera.PreviewCallback {
 
     private final CameraConfigurationManager configManager;

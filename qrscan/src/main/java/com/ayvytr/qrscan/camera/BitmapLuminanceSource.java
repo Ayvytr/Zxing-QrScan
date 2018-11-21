@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import com.google.zxing.LuminanceSource;
 
 /**
- * Created by aaron on 16/7/27.
  * 自定义解析Bitmap LuminanceSource
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
  */
 public class BitmapLuminanceSource extends LuminanceSource {
 

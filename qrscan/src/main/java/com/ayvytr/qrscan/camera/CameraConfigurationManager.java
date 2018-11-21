@@ -9,6 +9,12 @@ import android.view.WindowManager;
 
 import java.util.regex.Pattern;
 
+/**
+ * Configuration manager of Camera.
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
+ */
 public final class CameraConfigurationManager {
 
     private static final int TEN_DESIRED_ZOOM = 27;
@@ -27,7 +33,7 @@ public final class CameraConfigurationManager {
     }
 
     /**
-     * Reads, one time, values from the camera that are needed by the app.
+     * Reads, one time, values from the layout_camera that are needed by the app.
      */
     public void initFromCameraParameters(Camera camera) {
         Camera.Parameters parameters = camera.getParameters();
@@ -51,7 +57,7 @@ public final class CameraConfigurationManager {
     }
 
     /**
-     * Sets the camera up to take preview images which are used for both preview and decoding.
+     * Sets the layout_camera up to take preview images which are used for both preview and decoding.
      * We detect the preview format here so that buildLuminanceSource() can build an appropriate
      * LuminanceSource subclass. In the future we may want to force YUV420SP as it's the smallest,
      * and the planar Y can be used for barcode scanning without a copy in some cases.
@@ -98,7 +104,7 @@ public final class CameraConfigurationManager {
         }
 
         if (cameraResolution == null) {
-            // Ensure that the camera resolution is a multiple of 8, as the screen may not be.
+            // Ensure that the layout_camera resolution is a multiple of 8, as the screen may not be.
             cameraResolution = new Point(
                     (screenResolution.x >> 3) << 3,
                     (screenResolution.y >> 3) << 3);

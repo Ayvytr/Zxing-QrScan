@@ -15,8 +15,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * Created by aaron on 16/7/27.
  * 二维码扫描工具类
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
  */
 public class QrUtils {
     public static final String RESULT = "result_string";
@@ -69,7 +71,9 @@ public class QrUtils {
 
         int sampleSize = (int) (options.outHeight / (float) 400);
 
-        if(sampleSize <= 0) { sampleSize = 1; }
+        if (sampleSize <= 0) {
+            sampleSize = 1;
+        }
         options.inSampleSize = sampleSize;
         Bitmap mBitmap = BitmapFactory.decodeFile(path, options);
 
@@ -89,16 +93,16 @@ public class QrUtils {
         try {
             rawResult = multiFormatReader
                     .decodeWithState(new BinaryBitmap(new HybridBinarizer(new BitmapLuminanceSource(mBitmap))));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(rawResult != null) {
-            if(onScanListener != null) {
+        if (rawResult != null) {
+            if (onScanListener != null) {
                 onScanListener.onSucceed(mBitmap, rawResult.getText());
             }
         } else {
-            if(onScanListener != null) {
+            if (onScanListener != null) {
                 onScanListener.onFailed();
             }
         }
@@ -114,7 +118,7 @@ public class QrUtils {
      * @return
      */
     public static Bitmap createBitmap(String text, int w, int h, Bitmap logo) {
-        if(TextUtils.isEmpty(text)) {
+        if (TextUtils.isEmpty(text)) {
             return null;
         }
         try {
@@ -125,7 +129,7 @@ public class QrUtils {
 
             int scaleWidth = 0;
             int scaleHeight = 0;
-            if(scaleLogo != null) {
+            if (scaleLogo != null) {
                 scaleWidth = scaleLogo.getWidth();
                 scaleHeight = scaleLogo.getHeight();
                 offsetX = (w - scaleWidth) / 2;
@@ -139,12 +143,12 @@ public class QrUtils {
             hints.put(EncodeHintType.MARGIN, 0);
             BitMatrix bitMatrix = new QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, w, h, hints);
             int[] pixels = new int[w * h];
-            for(int y = 0; y < h; y++) {
-                for(int x = 0; x < w; x++) {
-                    if(x >= offsetX && x < offsetX + scaleWidth && y >= offsetY && y < offsetY + scaleHeight) {
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    if (x >= offsetX && x < offsetX + scaleWidth && y >= offsetY && y < offsetY + scaleHeight) {
                         int pixel = scaleLogo.getPixel(x - offsetX, y - offsetY);
-                        if(pixel == 0) {
-                            if(bitMatrix.get(x, y)) {
+                        if (pixel == 0) {
+                            if (bitMatrix.get(x, y)) {
                                 pixel = 0xff000000;
                             } else {
                                 pixel = 0xffffffff;
@@ -152,7 +156,7 @@ public class QrUtils {
                         }
                         pixels[y * w + x] = pixel;
                     } else {
-                        if(bitMatrix.get(x, y)) {
+                        if (bitMatrix.get(x, y)) {
                             pixels[y * w + x] = 0xff000000;
                         } else {
                             pixels[y * w + x] = 0xffffffff;
@@ -164,14 +168,14 @@ public class QrUtils {
                     Bitmap.Config.ARGB_8888);
             bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
             return bitmap;
-        } catch(WriterException e) {
+        } catch (WriterException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     private static Bitmap getScaleLogo(Bitmap logo, int w, int h) {
-        if(logo == null) return null;
+        if (logo == null) return null;
         Matrix matrix = new Matrix();
         float scaleFactor = Math.min(w * 1.0f / 5 / logo.getWidth(), h * 1.0f / 5 / logo.getHeight());
         matrix.postScale(scaleFactor, scaleFactor);
@@ -180,20 +184,20 @@ public class QrUtils {
     }
 
 
-  //    public static void isLightEnable(boolean isEnable) {
+    //    public static void isLightEnable(boolean isEnable) {
 //        if (isEnable) {
-//            Camera camera = CameraManager.get().getCamera();
-//            if (camera != null) {
-//                Camera.Parameters parameter = camera.getParameters();
+//            Camera layout_camera = CameraManager.get().getCamera();
+//            if (layout_camera != null) {
+//                Camera.Parameters parameter = layout_camera.getParameters();
 //                parameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-//                camera.setParameters(parameter);
+//                layout_camera.setParameters(parameter);
 //            }
 //        } else {
-//            Camera camera = CameraManager.get().getCamera();
-//            if (camera != null) {
-//                Camera.Parameters parameter = camera.getParameters();
+//            Camera layout_camera = CameraManager.get().getCamera();
+//            if (layout_camera != null) {
+//                Camera.Parameters parameter = layout_camera.getParameters();
 //                parameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-//                camera.setParameters(parameter);
+//                layout_camera.setParameters(parameter);
 //            }
 //        }
 //    }

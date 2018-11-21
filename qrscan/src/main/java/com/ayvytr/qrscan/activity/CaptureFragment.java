@@ -14,6 +14,9 @@ import com.ayvytr.qrscan.view.ScanView;
 
 /**
  * 自定义实现的扫描Fragment
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
  */
 public class CaptureFragment extends Fragment {
     public static final String LAYOUT_ID = "layout_id";
@@ -34,14 +37,14 @@ public class CaptureFragment extends Fragment {
 
         Bundle bundle = getArguments();
         View view = null;
-        if(bundle != null) {
+        if (bundle != null) {
             int layoutId = bundle.getInt(LAYOUT_ID);
-            if(layoutId != -1) {
+            if (layoutId != -1) {
                 view = inflater.inflate(layoutId, null);
             }
         }
 
-        if(view == null) {
+        if (view == null) {
             view = inflater.inflate(R.layout.fragment_capture, null);
         }
 

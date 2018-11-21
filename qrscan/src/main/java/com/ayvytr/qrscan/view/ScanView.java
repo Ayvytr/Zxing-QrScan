@@ -14,10 +14,11 @@ import android.view.View;
 import com.ayvytr.qrscan.R;
 
 /**
- * This view is overlaid on top of the camera preview. It adds the viewfinder rectangle and partial
+ * This view is overlaid on top of the layout_camera preview. It adds the viewfinder rectangle and partial
  * transparency outside it, as well as the laser scanner animation and result points.
  *
- * @author dswitkin@google.com (Daniel Switkin)
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
  */
 public class ScanView extends View {
 
@@ -29,7 +30,6 @@ public class ScanView extends View {
     private static final int CORNER_RECT_HEIGHT = 40; //扫描区边角的高
     private static final int SCANNER_LINE_MOVE_DISTANCE = 6;  //扫描线移动距离
     private static final int SCANNER_LINE_HEIGHT = 10;  //扫描线宽度
-    private static final int DEFAULT_WIDTH_DP = 300;
 
     private final Paint paint;
     private final TextPaint textPaint;
@@ -64,8 +64,8 @@ public class ScanView extends View {
 
         private static TextLocation getFromInt(int value) {
 
-            for(TextLocation location : TextLocation.values()) {
-                if(location.mValue == value) {
+            for (TextLocation location : TextLocation.values()) {
+                if (location.mValue == value) {
                     return location;
                 }
             }
@@ -106,11 +106,11 @@ public class ScanView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         frame = getFrame();
-        if(frame == null) {
+        if (frame == null) {
             return;
         }
 
-        if(scannerStart == 0 || scannerEnd == 0) {
+        if (scannerStart == 0 || scannerEnd == 0) {
             scannerStart = frame.top;
             scannerEnd = frame.bottom - SCANNER_LINE_HEIGHT;
         }
@@ -121,7 +121,7 @@ public class ScanView extends View {
         // Draw the exterior (i.e. outside the framing rect) darkened
         drawExterior(canvas, frame, width, height);
 
-        if(resultBitmap != null) {
+        if (resultBitmap != null) {
             // Draw the opaque result bitmap over the scanning rectangle
             paint.setAlpha(CURRENT_POINT_OPACITY);
             canvas.drawBitmap(resultBitmap, null, frame, paint);
@@ -148,7 +148,7 @@ public class ScanView extends View {
     }
 
     private Rect getFrame() {
-        if(frame == null) {
+        if (frame == null) {
             frame = new Rect();
             frame.left = (getMeasuredWidth() - frameWidth) / 2;
             frame.right = frame.left + frameWidth;
@@ -161,13 +161,13 @@ public class ScanView extends View {
 
     //绘制文本
     private void drawTextInfo(Canvas canvas, Rect frame) {
-        if(!TextUtils.isEmpty(labelText)) {
+        if (!TextUtils.isEmpty(labelText)) {
             textPaint.setColor(labelTextColor);
             textPaint.setTextSize(labelTextSize);
             textPaint.setTextAlign(Paint.Align.CENTER);
             StaticLayout staticLayout = new StaticLayout(labelText, textPaint, canvas.getWidth(),
                     Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, true);
-            if(textLocation == TextLocation.BOTTOM) {
+            if (textLocation == TextLocation.BOTTOM) {
                 canvas.translate(frame.left + frame.width() / 2, frame.bottom + textPadding);
                 staticLayout.draw(canvas);
             } else {
@@ -211,7 +211,7 @@ public class ScanView extends View {
                 Shader.TileMode.MIRROR);
 
         paint.setShader(linearGradient);
-        if(scannerStart <= scannerEnd) {
+        if (scannerStart <= scannerEnd) {
             //椭圆
             RectF rectF = new RectF(frame.left + 2 * SCANNER_LINE_HEIGHT, scannerStart,
                     frame.right - 2 * SCANNER_LINE_HEIGHT, scannerStart + SCANNER_LINE_HEIGHT);
@@ -252,7 +252,7 @@ public class ScanView extends View {
     public void drawViewfinder() {
         Bitmap resultBitmap = this.resultBitmap;
         this.resultBitmap = null;
-        if(resultBitmap != null) {
+        if (resultBitmap != null) {
             resultBitmap.recycle();
         }
         invalidate();
@@ -263,7 +263,7 @@ public class ScanView extends View {
         return (int) (dpValue * scale + 0.5f);
     }
 
-    public int getFrameWidth(){
+    public int getFrameWidth() {
         return frameWidth;
     }
 }

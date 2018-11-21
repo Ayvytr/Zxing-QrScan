@@ -9,9 +9,10 @@ import com.ayvytr.qrscan.QrUtils;
 import com.ayvytr.qrscan.R;
 
 /**
- * Initial the camera
- * <p>
- * 默认的二维码扫描Activity
+ * 默认的二维码扫描Activity.
+ *
+ * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @since 1.0.0
  */
 public class CaptureActivity extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class CaptureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera);
+        setContentView(R.layout.layout_camera);
         CaptureFragment captureFragment = new CaptureFragment();
         captureFragment.setOnScanListener(onScanListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_zxing_container, captureFragment).commit();
