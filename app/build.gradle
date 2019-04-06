@@ -18,8 +18,8 @@ android {
     }
 }
 
-//def testJcenter = true
-def testJcenter = false
+def testJcenter = true
+//def testJcenter = false
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -33,7 +33,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     if(testJcenter) {
-        implementation 'com.ayvytr:qrscan:1.0.0'
+        implementation 'com.ayvytr:qrscan:2.0.0'
     }else {
         implementation project(':qrscan')
     }
