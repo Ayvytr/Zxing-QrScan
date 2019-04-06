@@ -2,22 +2,23 @@ package com.ayvytr.qrscantest;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.ayvytr.qrscan.OnScanListener;
 import com.ayvytr.qrscan.QrUtils;
 import com.ayvytr.qrscan.activity.CaptureActivity;
 import com.ayvytr.qrscantest.utils.CheckPermissionUtils;
+
+import java.util.List;
+
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
-
-import java.util.List;
 
 public class MainActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
 
@@ -117,7 +118,7 @@ public class MainActivity extends BaseActivity implements EasyPermissions.Permis
                 try {
                     QrUtils.decodeBitmap(ImageUtil.getImageAbsolutePath(this, uri), new OnScanListener() {
                         @Override
-                        public void onSucceed(Bitmap mBitmap, String result) {
+                        public void onSucceed(String result) {
                             Toast.makeText(MainActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
                         }
 

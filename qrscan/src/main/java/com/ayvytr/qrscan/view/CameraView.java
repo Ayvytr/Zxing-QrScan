@@ -2,40 +2,34 @@ package com.ayvytr.qrscan.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 import com.ayvytr.qrscan.OnScanListener;
-import com.ayvytr.qrscan.camera.AutoFocusCallback;
-import com.ayvytr.qrscan.camera.CameraConfigurationManager;
-import com.ayvytr.qrscan.camera.PlanarYUVLuminanceSource;
-import com.ayvytr.qrscan.camera.PreviewCallback;
-import com.ayvytr.qrscan.decoding.CaptureActivityHandler;
-import com.google.zxing.Result;
+import com.ayvytr.qrscan.core.CameraConfigurationManager;
+import com.ayvytr.qrscan.core.PlanarYUVLuminanceSource;
+import com.ayvytr.qrscan.core.PreviewHandler;
 
 import java.io.IOException;
 
 /**
  * 继承SurfaceView的CameraView.
  *
- * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @author wangdunwei
  * @since 1.0.0
  */
 public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private CaptureActivityHandler handler;
+    private PreviewHandler handler;
     private SurfaceHolder surfaceHolder;
-    private OnScanListener onScanListener;
     private Camera camera;
-
 
     private int frameWidth = -1;
     private int frameMarginTop = -1;
@@ -48,12 +42,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean useOneShotPreviewCallback = true;
 
     private CameraConfigurationManager configManager;
-
-    private PreviewCallback previewCallback;
-    /**
-     * Autofocus callbacks arrive here, and are dispatched to the Handler which requested them.
-     */
-    private AutoFocusCallback autoFocusCallback;
 
     public CameraView(Context context) {
         this(context, null);
@@ -81,59 +69,39 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
         this.configManager = new CameraConfigurationManager(getContext());
 
-        previewCallback = new PreviewCallback(configManager, useOneShotPreviewCallback);
-        autoFocusCallback = new AutoFocusCallback();
+        if(handler == null) {
+            handler = new PreviewHandler(this);
+        }
     }
 
-    /**
-     * Handler scan result
-     */
-    public void handleDecode(Result result, Bitmap barcode) {
-        if (result == null || TextUtils.isEmpty(result.getText())) {
-            if (onScanListener != null) {
-                onScanListener.onFailed();
-            }
-        } else {
-            if (onScanListener != null) {
-                onScanListener.onSucceed(barcode, result.getText());
-            }
-        }
+    public CameraConfigurationManager getConfigManager() {
+        return configManager;
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             openDriver(surfaceHolder);
-        } catch (Exception e) {
-            return;
-        }
-        if (handler == null) {
-            handler = new CaptureActivityHandler(this);
+        } catch(IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         initCamera(holder);
+        startPreview();
+        handler.start();
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         stopPreview();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (handler != null) {
-            handler.quitSynchronously();
-            handler = null;
-        }
         closeDriver();
+        handler.stop();
     }
 
     @Override
@@ -141,12 +109,10 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         return handler;
     }
 
-    /**
-     * //TODO 解决空指针
-     * Activity.onCreate调用时， CameraView还没初始化，报空指针
-     */
     public void setOnScanListener(OnScanListener onScanListener) {
-        this.onScanListener = onScanListener;
+        if(handler != null) {
+            handler.setOnScanListener(onScanListener);
+        }
     }
 
     /**
@@ -156,14 +122,14 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
      * @throws IOException Indicates the layout_camera driver failed to open.
      */
     public void openDriver(SurfaceHolder holder) throws IOException {
-        if (camera == null) {
+        if(camera == null) {
             camera = Camera.open();
-            if (camera == null) {
+            if(camera == null) {
                 throw new IOException();
             }
             camera.setPreviewDisplay(holder);
 
-            if (!initialized) {
+            if(!initialized) {
                 initialized = true;
                 configManager.initFromCameraParameters(camera);
             }
@@ -175,19 +141,31 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
      * Closes the layout_camera driver if still in use.
      */
     public void closeDriver() {
-        if (camera != null) {
+        if(camera != null) {
             camera.release();
             camera = null;
         }
+
     }
 
     /**
      * Asks the layout_camera hardware to begin drawing preview frames to the screen.
      */
     public void startPreview() {
-        if (camera != null && !previewing) {
-            camera.startPreview();
+        if(camera != null && !previewing) {
+            try {
+                camera.startPreview();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
             previewing = true;
+        }
+    }
+
+    public void autoFocus(Camera.AutoFocusCallback callback) {
+        if(camera != null && previewing) {
+            camera.autoFocus(callback);
         }
     }
 
@@ -195,49 +173,32 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
      * Tells the layout_camera to stop drawing preview frames.
      */
     public void stopPreview() {
-        if (camera != null && previewing) {
-            if (!useOneShotPreviewCallback) {
+        if(camera != null && previewing) {
+            camera.cancelAutoFocus();
+
+            if(!useOneShotPreviewCallback) {
                 camera.setPreviewCallback(null);
             }
-            camera.stopPreview();
-            previewCallback.setHandler(null, 0);
-            autoFocusCallback.setHandler(null, 0);
+            try {
+                camera.stopPreview();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
             previewing = false;
         }
     }
 
 
-    /**
-     * A single preview frame will be returned to the handler supplied. The data will arrive as byte[]
-     * in the message.obj field, with width and height encoded as message.arg1 and message.arg2,
-     * respectively.
-     *
-     * @param handler The handler to send the message to.
-     * @param message The what field of the message to be sent.
-     */
-    public void requestPreviewFrame(Handler handler, int message) {
-        if (camera != null && previewing) {
-            previewCallback.setHandler(handler, message);
-            if (useOneShotPreviewCallback) {
-                camera.setOneShotPreviewCallback(previewCallback);
+    public void setPreviewCallback(Camera.PreviewCallback callback) {
+        if(camera != null && previewing) {
+            if(useOneShotPreviewCallback) {
+                camera.setOneShotPreviewCallback(callback);
             } else {
-                camera.setPreviewCallback(previewCallback);
+                camera.setPreviewCallback(callback);
             }
         }
     }
 
-    /**
-     * Asks the layout_camera hardware to perform an autofocus.
-     *
-     * @param handler The Handler to notify when the autofocus completes.
-     * @param message The message to deliver.
-     */
-    public void requestAutoFocus(Handler handler, int message) {
-        if (camera != null && previewing) {
-            autoFocusCallback.setHandler(handler, message);
-            camera.autoFocus(autoFocusCallback);
-        }
-    }
 
     /**
      * Calculates the framing rect which the UI should draw to show the user where to place the
@@ -250,14 +211,14 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         try {
             Point screenResolution = configManager.getScreenResolution();
             // if (framingRect == null) {
-            if (camera == null) {
+            if(camera == null) {
                 return null;
             }
 
             int leftOffset = (screenResolution.x - frameWidth) / 2;
 
             int topOffset;
-            if (frameMarginTop != -1) {
+            if(frameMarginTop != -1) {
                 topOffset = frameMarginTop;
             } else {
                 topOffset = (screenResolution.y - frameWidth) / 2;
@@ -265,7 +226,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
             framingRect = new Rect(leftOffset, topOffset, leftOffset + frameWidth, topOffset + frameWidth);
             // }
             return framingRect;
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -276,7 +237,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
      * not UI / screen.
      */
     public Rect getFramingRectInPreview() {
-        if (framingRectInPreview == null) {
+        if(framingRectInPreview == null) {
             Rect rect = new Rect(getFramingRect());
             Point cameraResolution = configManager.getCameraResolution();
             Point screenResolution = configManager.getScreenResolution();
@@ -304,7 +265,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         Rect rect = getFramingRectInPreview();
         int previewFormat = configManager.getPreviewFormat();
         String previewFormatString = configManager.getPreviewFormatString();
-        switch (previewFormat) {
+        switch(previewFormat) {
             // This is the standard Android format which all devices are REQUIRED to support.
             // In theory, it's the only one we should ever care about.
             case PixelFormat.YCbCr_420_SP:
@@ -316,7 +277,7 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback {
             default:
                 // The Samsung Moment incorrectly uses this variant instead of the 'sp' version.
                 // Fortunately, it too has all the Y data up front, so we can read it.
-                if ("yuv420p".equals(previewFormatString)) {
+                if("yuv420p".equals(previewFormatString)) {
                     return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
                             rect.width(), rect.height());
                 }

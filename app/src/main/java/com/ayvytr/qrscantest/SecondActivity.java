@@ -1,10 +1,10 @@
 package com.ayvytr.qrscantest;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import com.ayvytr.qrscan.OnScanListener;
 import com.ayvytr.qrscan.QrUtils;
 import com.ayvytr.qrscan.activity.CaptureFragment;
@@ -72,7 +72,7 @@ public class SecondActivity extends BaseActivity {
      */
     OnScanListener onScanListener = new OnScanListener() {
         @Override
-        public void onSucceed(Bitmap mBitmap, String result) {
+        public void onSucceed(String result) {
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putString(QrUtils.RESULT, result);

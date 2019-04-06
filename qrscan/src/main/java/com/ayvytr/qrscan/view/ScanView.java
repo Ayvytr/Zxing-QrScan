@@ -2,7 +2,13 @@ package com.ayvytr.qrscan.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -11,13 +17,15 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+
 import com.ayvytr.qrscan.R;
+
 
 /**
  * This view is overlaid on top of the layout_camera preview. It adds the viewfinder rectangle and partial
  * transparency outside it, as well as the laser scanner animation and result points.
  *
- * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @author wangdunwei
  * @since 1.0.0
  */
 public class ScanView extends View {

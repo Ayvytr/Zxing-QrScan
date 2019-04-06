@@ -1,17 +1,18 @@
 package com.ayvytr.qrscan.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 import com.ayvytr.qrscan.OnScanListener;
 import com.ayvytr.qrscan.QrUtils;
 import com.ayvytr.qrscan.R;
 
+
 /**
  * 默认的二维码扫描Activity.
  *
- * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @author wangdunwei
  * @since 1.0.0
  */
 public class CaptureActivity extends AppCompatActivity {
@@ -31,8 +32,9 @@ public class CaptureActivity extends AppCompatActivity {
      * 二维码解析回调函数
      */
     OnScanListener onScanListener = new OnScanListener() {
+
         @Override
-        public void onSucceed(Bitmap mBitmap, String result) {
+        public void onSucceed(String result) {
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putString(QrUtils.RESULT, result);

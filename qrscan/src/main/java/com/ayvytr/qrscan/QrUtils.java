@@ -4,8 +4,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.text.TextUtils;
-import com.ayvytr.qrscan.camera.BitmapLuminanceSource;
-import com.google.zxing.*;
+
+import com.ayvytr.qrscan.core.BitmapLuminanceSource;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.Result;
+import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -17,13 +24,11 @@ import java.util.Vector;
 /**
  * 二维码扫描工具类
  *
- * @author Ayvytr <a href="https://github.com/Ayvytr" target="_blank">'s GitHub</a>
+ * @author wangdunwei
  * @since 1.0.0
  */
 public class QrUtils {
     public static final String RESULT = "result_string";
-
-    public static final String BARCODE_BITMAP = "barcode_bitmap";
 
     private static final Vector<BarcodeFormat> PRODUCT_FORMATS;
     private static final Vector<BarcodeFormat> ONE_D_FORMATS;
@@ -99,7 +104,7 @@ public class QrUtils {
 
         if (rawResult != null) {
             if (onScanListener != null) {
-                onScanListener.onSucceed(mBitmap, rawResult.getText());
+                onScanListener.onSucceed(rawResult.getText());
             }
         } else {
             if (onScanListener != null) {
@@ -183,22 +188,4 @@ public class QrUtils {
         return result;
     }
 
-
-    //    public static void isLightEnable(boolean isEnable) {
-//        if (isEnable) {
-//            Camera layout_camera = CameraManager.get().getCamera();
-//            if (layout_camera != null) {
-//                Camera.Parameters parameter = layout_camera.getParameters();
-//                parameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-//                layout_camera.setParameters(parameter);
-//            }
-//        } else {
-//            Camera layout_camera = CameraManager.get().getCamera();
-//            if (layout_camera != null) {
-//                Camera.Parameters parameter = layout_camera.getParameters();
-//                parameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-//                layout_camera.setParameters(parameter);
-//            }
-//        }
-//    }
 }
