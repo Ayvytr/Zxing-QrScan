@@ -71,11 +71,9 @@ public class QrUtils {
          * 首先判断图片的大小,若图片过大,则执行图片的裁剪操作,防止OOM
          */
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true; // 先获取原大小
         options.inJustDecodeBounds = false; // 获取新的大小
 
-        int sampleSize = (int) (options.outHeight / (float) 400);
-
+        int sampleSize = (int) (options.outHeight / (float) 800);
         if (sampleSize <= 0) {
             sampleSize = 1;
         }
