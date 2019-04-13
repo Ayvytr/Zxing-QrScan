@@ -23,6 +23,7 @@ def testJcenter = true
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -32,9 +33,9 @@ dependencies {
     implementation 'pub.devrel:easypermissions:0.2.0'
     testImplementation 'junit:junit:4.12'
 
-    if(testJcenter) {
-        implementation 'com.ayvytr:qrscan:2.0.0'
-    }else {
+    if (testJcenter) {
+        implementation 'com.ayvytr:qrscan:2.1.0'
+    } else {
         implementation project(':qrscan')
     }
 }

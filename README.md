@@ -1,4 +1,4 @@
-[![jCenter](https://img.shields.io/badge/jCenter-2.0.0-red.svg)](https://bintray.com/ayvytr/maven/qrscan/_latestVersion)[![License](https://img.shields.io/badge/license-Apche%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![jCenter](https://img.shields.io/badge/jCenter-2.1.0-red.svg)](https://bintray.com/ayvytr/maven/qrscan/_latestVersion)[![License](https://img.shields.io/badge/license-Apche%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 
 
@@ -35,8 +35,15 @@ QrScan Library, Support QrScan, Create QrScan, Using Zxing Library（二维码�
 
 ## 导入
 
-**`compile 'com.ayvytr:qrscan:2.0.0'`**
+**`compile 'com.ayvytr:qrscan:2.1.0'`**
 
+## Change Log
+2.1.0
+解决了*CameraView*异常问题
+
+2.0.0
+1. 优化了**CameraView**的生命周期
+2. 优化删除了多余的Handler Callback
 
 
 ## 使用

@@ -2,6 +2,9 @@ package com.ayvytr.qrscantest;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -64,8 +67,24 @@ public class SecondActivity extends BaseActivity {
 
             }
         });
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_second, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.mid_jump) {
+            startActivity(new Intent(this, TestJumpActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * 二维码解析回调函数
