@@ -38,6 +38,10 @@ QrScan Library, Support QrScan, Create QrScan, Using Zxing Library（二维码�
 **`compile 'com.ayvytr:qrscan:2.1.0'`**
 
 ## Change Log
+
+2.2.0
+解决了解析**QrUtils.decodeBitmap**二维码图片解析不出的问题
+
 2.1.0
 解决了*CameraView*异常问题
 
