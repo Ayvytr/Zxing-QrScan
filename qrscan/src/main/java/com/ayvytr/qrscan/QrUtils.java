@@ -71,14 +71,16 @@ public class QrUtils {
          * 首先判断图片的大小,若图片过大,则执行图片的裁剪操作,防止OOM
          */
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = false; // 获取新的大小
+        options.inJustDecodeBounds = true; // 获取原大小
+        Bitmap mBitmap = BitmapFactory.decodeFile(path, options);
 
+        options.inJustDecodeBounds = false; // 获取新的大小
         int sampleSize = (int) (options.outHeight / (float) 800);
         if (sampleSize <= 0) {
             sampleSize = 1;
         }
         options.inSampleSize = sampleSize;
-        Bitmap mBitmap = BitmapFactory.decodeFile(path, options);
+        mBitmap = BitmapFactory.decodeFile(path, options);
 
         MultiFormatReader multiFormatReader = new MultiFormatReader();
 
