@@ -1,4 +1,4 @@
-[![jCenter](https://img.shields.io/badge/jCenter-2.1.0-red.svg)](https://bintray.com/ayvytr/maven/qrscan/_latestVersion)[![License](https://img.shields.io/badge/license-Apche%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![jCenter](https://img.shields.io/badge/jCenter-2.2.0-red.svg)](https://bintray.com/ayvytr/maven/qrscan/_latestVersion)[![License](https://img.shields.io/badge/license-Apche%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 
 
@@ -35,7 +35,7 @@ QrScan Library, Support QrScan, Create QrScan, Using Zxing Library（二维码�
 
 ## 导入
 
-**`compile 'com.ayvytr:qrscan:2.1.0'`**
+**`compile 'com.ayvytr:qrscan:2.2.0'`**
 
 ## Change Log
 
